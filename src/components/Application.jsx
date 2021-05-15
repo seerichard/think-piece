@@ -20,7 +20,6 @@ const Application = () => {
   const handleRemove = async (id) => {
     // Using firestore shorthand
     // Remove from the database
-    console.log("Id:", id);
     await firestore.doc(`posts/${id}`).delete();
 
     // Remove from state
@@ -28,15 +27,12 @@ const Application = () => {
   };
 
   useEffect(() => {
-    const getPosts = async () => {
-      const snapshot = await firestore.collection("posts").get();
-
+    const unsubscribe = firestore.collection("posts").onSnapshot((snapshot) => {
       const posts = snapshot.docs.map(collectIdsAndDocs);
-
       setPosts(posts);
-    };
+    });
 
-    getPosts();
+    return unsubscribe;
   }, []);
 
   return (
