@@ -1,5 +1,6 @@
 // Importing the minimum required (not entire firebase)
 import firebase from 'firebase/app';
+import 'firebase/firestore';
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const config = {
@@ -13,6 +14,8 @@ const config = {
 };
 
 firebase.initializeApp(config);
+
+export const firestore = firebase.firestore();
 
 // Not exactly best practice, but great for debugging!
 window.firebase = firebase;
