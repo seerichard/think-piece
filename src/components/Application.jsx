@@ -44,15 +44,20 @@ const Application = () => {
   };
 
   useEffect(() => {
-    const posts = firestore
-      .collection("posts")
-      .get()
-      .then((snapshot) => {
-        // Called a snapshot as this is a snapshot of the database at the time of querying
-        console.log({ snapshot });
+    const getPosts = async () => {
+      const snapshot = await firestore.collection("posts").get();
+
+      snapshot.forEach((doc) => {
+        const id = doc.id;
+        const data = doc.data();
+
+        console.log("Doc:", { id, data });
       });
 
-    console.log({ posts });
+      console.log({ snapshot });
+    };
+
+    getPosts();
   }, []);
 
   return (
