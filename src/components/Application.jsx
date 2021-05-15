@@ -36,7 +36,7 @@ const initialPosts = [
 ];
 
 const Application = () => {
-  const [posts, setPosts] = useState(initialPosts);
+  const [posts, setPosts] = useState([]);
 
   const handleCreate = (post) => {
     console.log("Inside:", post);
@@ -47,14 +47,9 @@ const Application = () => {
     const getPosts = async () => {
       const snapshot = await firestore.collection("posts").get();
 
-      snapshot.forEach((doc) => {
-        const id = doc.id;
-        const data = doc.data();
+      const posts = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
-        console.log("Doc:", { id, data });
-      });
-
-      console.log({ snapshot });
+      setPosts(posts);
     };
 
     getPosts();
