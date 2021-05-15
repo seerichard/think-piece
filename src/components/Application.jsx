@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { firestore } from "../firebase";
 
@@ -42,6 +42,18 @@ const Application = () => {
     console.log("Inside:", post);
     setPosts([post, ...posts]);
   };
+
+  useEffect(() => {
+    const posts = firestore
+      .collection("posts")
+      .get()
+      .then((snapshot) => {
+        // Called a snapshot as this is a snapshot of the database at the time of querying
+        console.log({ snapshot });
+      });
+
+    console.log({ posts });
+  }, []);
 
   return (
     <main className="Application">
