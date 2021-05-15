@@ -17,6 +17,16 @@ const Application = () => {
     setPosts([newPost, ...posts]);
   };
 
+  const handleRemove = async (id) => {
+    // Using firestore shorthand
+    // Remove from the database
+    console.log("Id:", id);
+    await firestore.doc(`posts/${id}`).delete();
+
+    // Remove from state
+    setPosts(posts.filter((post) => post.id !== id));
+  };
+
   useEffect(() => {
     const getPosts = async () => {
       const snapshot = await firestore.collection("posts").get();
@@ -32,7 +42,7 @@ const Application = () => {
   return (
     <main className="Application">
       <h1>Think Piece</h1>
-      <Posts posts={posts} onCreate={handleCreate} />
+      <Posts posts={posts} onCreate={handleCreate} onRemove={handleRemove} />
     </main>
   );
 };
