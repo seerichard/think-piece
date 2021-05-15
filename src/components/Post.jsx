@@ -1,47 +1,45 @@
 import React from "react";
 import moment from "moment";
 
-const Post = ({
-  id,
-  title,
-  content,
-  user,
-  createdAt,
-  stars,
-  comments,
-  onRemove,
-}) => (
-  <article className="Post">
-    <div className="Post--content">
-      <h3>{title}</h3>
-      <div>{content}</div>
-    </div>
-    <div className="Post--meta">
-      <div>
-        <p>
-          <span role="img" aria-label="star">
-            ⭐️
-          </span>
-          {stars}
-        </p>
-        <p>
-          <span role="img" aria-label="comments">
-            🙊
-          </span>
-          {comments}
-        </p>
-        <p>Posted by {user.displayName}</p>
-        <p>{moment(createdAt).calendar()}</p>
+import { firestore } from "../firebase";
+
+const Post = ({ id, title, content, user, createdAt, stars, comments }) => {
+  const postReference = firestore.doc(`posts/${id}`);
+  const removePost = () => postReference.delete();
+
+  return (
+    <article className="Post">
+      <div className="Post--content">
+        <h3>{title}</h3>
+        <div>{content}</div>
       </div>
-      <div>
-        <button className="star">Star</button>
-        <button className="delete" onClick={() => onRemove(id)}>
-          Delete
-        </button>
+      <div className="Post--meta">
+        <div>
+          <p>
+            <span role="img" aria-label="star">
+              ⭐️
+            </span>
+            {stars}
+          </p>
+          <p>
+            <span role="img" aria-label="comments">
+              🙊
+            </span>
+            {comments}
+          </p>
+          <p>Posted by {user.displayName}</p>
+          <p>{moment(createdAt).calendar()}</p>
+        </div>
+        <div>
+          <button className="star">Star</button>
+          <button className="delete" onClick={removePost}>
+            Delete
+          </button>
+        </div>
       </div>
-    </div>
-  </article>
-);
+    </article>
+  );
+};
 
 Post.defaultProps = {
   title: "An Incredibly Hot Take",
