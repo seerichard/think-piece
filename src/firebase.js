@@ -1,6 +1,7 @@
 // Importing the minimum required (not entire firebase)
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import 'firebase/auth';
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const config = {
@@ -16,6 +17,10 @@ const config = {
 firebase.initializeApp(config);
 
 export const firestore = firebase.firestore();
+export const auth = firebase.auth();
+
+export const provider = new firebase.auth.GoogleAuthProvider();
+export const signInWithGoogle = () => auth.signInWithPopup(provider);
 
 // Not exactly best practice, but great for debugging!
 window.firebase = firebase;
