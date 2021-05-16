@@ -1,12 +1,24 @@
 import React, { useState } from "react";
+import { auth } from "../firebase";
 
 const SignUp = () => {
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
+    try {
+      const { user } = await auth.createUserWithEmailAndPassword(
+        email,
+        password
+      );
+
+      user.updateProfile({ displayName });
+    } catch (error) {
+      console.error(error);
+    }
 
     setDisplayName("");
     setEmail("");
