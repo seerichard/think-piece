@@ -34,7 +34,7 @@ export const createUserProfileDocument = async (user, additionalData) => {
   // Get a reference to the place in the database where a user profile might be
   const userReference = firestore.doc(`users/${user.uid}`);
 
-  // Fetch teh document from that location
+  // Fetch the document from that location
   const snapshot = await userReference.get();
 
   if (!snapshot.exists) {
@@ -50,8 +50,24 @@ export const createUserProfileDocument = async (user, additionalData) => {
         ...additionalData
       })
     } catch (error) {
-      console.error('Error creating user:', error);
+      console.error('Error creating user:', error.message);
     }
+  }
+
+  return getUserDocument(user.uid);
+}
+
+export const getUserDocument = async (uid) => {
+  if (!uid) return null;
+
+  try {
+    // Equivalent is await firestore.collection('users).doc(uid).get();
+    // Just different syntax
+    const userDocument = await firestore.doc(`users/${uid}`).get();
+
+    return { uid, ...userDocument.data() };
+  } catch (error) {
+    console.error('Error fetching user:', error.message);
   }
 }
 
