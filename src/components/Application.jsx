@@ -24,12 +24,13 @@ const Application = () => {
     // Will trigger when user goes from logged in -> logged out and vice versa
     // Will get user object if logged in, null if logged out
     const unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
-      const user = createUserProfileDocument(userAuth);
+      const user = await createUserProfileDocument(userAuth);
+
       setUser(user);
     });
 
     return unsubscribeFromAuth;
-  });
+  }, []);
 
   return (
     <main className="Application">

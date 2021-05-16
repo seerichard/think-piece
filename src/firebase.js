@@ -61,7 +61,7 @@ export const getUserDocument = async (uid) => {
   if (!uid) return null;
 
   try {
-    // Equivalent is await firestore.collection('users).doc(uid).get();
+    // Equivalent is await firestore.collection('users').doc(uid).get();
     // Just different syntax
     const userDocument = await firestore.doc(`users/${uid}`).get();
 
