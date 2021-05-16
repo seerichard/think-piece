@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { auth } from "../firebase";
+import { auth, createUserProfileDocument } from "../firebase";
 
 const SignUp = () => {
   const [displayName, setDisplayName] = useState("");
@@ -15,7 +15,7 @@ const SignUp = () => {
         password
       );
 
-      user.updateProfile({ displayName });
+      createUserProfileDocument(user, { displayName });
     } catch (error) {
       console.error(error);
     }

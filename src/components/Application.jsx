@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { firestore, auth } from "../firebase";
+import { firestore, auth, createUserProfileDocument } from "../firebase";
 import Authentication from "./Authentication";
 import Posts from "./Posts";
 import { collectIdsAndDocs } from "../utilities";
@@ -23,8 +23,8 @@ const Application = () => {
   useEffect(() => {
     // Will trigger when user goes from logged in -> logged out and vice versa
     // Will get user object if logged in, null if logged out
-    const unsubscribeFromAuth = auth.onAuthStateChanged((user) => {
-      console.log("user:", user);
+    const unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+      const user = createUserProfileDocument(userAuth);
       setUser(user);
     });
 
