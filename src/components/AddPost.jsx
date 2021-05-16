@@ -1,18 +1,13 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { firestore, auth } from "../firebase";
 
-class AddPost extends Component {
-  state = { title: "", content: "" };
+const AddPost = () => {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
 
-  handleChange = (event) => {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
-  };
-
-  handleSubmit = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
-    const { title, content } = this.state;
     const { uid, displayName, email, photoURL } = auth.currentUser || {};
 
     const post = {
@@ -31,31 +26,29 @@ class AddPost extends Component {
 
     firestore.collection("posts").add(post);
 
-    this.setState({ title: "", content: "" });
+    setTitle("");
+    setContent("");
   };
 
-  render() {
-    const { title, content } = this.state;
-    return (
-      <form onSubmit={this.handleSubmit} className="AddPost">
-        <input
-          type="text"
-          name="title"
-          placeholder="Title"
-          value={title}
-          onChange={this.handleChange}
-        />
-        <input
-          type="text"
-          name="content"
-          placeholder="Body"
-          value={content}
-          onChange={this.handleChange}
-        />
-        <input className="create" type="submit" value="Create Post" />
-      </form>
-    );
-  }
-}
+  return (
+    <form onSubmit={handleSubmit} className="AddPost">
+      <input
+        type="text"
+        name="title"
+        placeholder="Title"
+        value={title}
+        onChange={(event) => setTitle(event.target.value)}
+      />
+      <input
+        type="text"
+        name="content"
+        placeholder="Body"
+        value={content}
+        onChange={(event) => setContent(event.target.value)}
+      />
+      <input className="create" type="submit" value="Create Post" />
+    </form>
+  );
+};
 
 export default AddPost;
