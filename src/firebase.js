@@ -27,4 +27,32 @@ export const signOut = () => auth.signOut();
 // Not exactly best practice, but great for debugging!
 window.firebase = firebase;
 
+export const createUserProfileDocument = async (user, additionalData) => {
+  // If user signs out, user will be null
+  if (!user) return;
+
+  // Get a reference to the place in the database where a user profile might be
+  const userReference = firestore.doc(`users/${user.uid}`);
+
+  // Fetch teh document from that location
+  const snapshot = await userReference.get();
+
+  if (!snapshot.exists) {
+    const { displayName, email, photoURL } = user;
+    const createdAt = new Date();
+
+    try {
+      await userReference.set({
+        displayName,
+        email,
+        photoURL,
+        createdAt,
+        ...additionalData
+      })
+    } catch (error) {
+      console.error('Error creating user:', error);
+    }
+  }
+}
+
 export default firebase;
