@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import Post from "./Post";
 import AddPost from "./AddPost";
-import { PostsContext } from "../providers/PostsProviders";
+import { PostsContext } from "../providers/PostsProvider";
 
 const Posts = () => {
   const posts = useContext(PostsContext);
